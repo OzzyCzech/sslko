@@ -8,6 +8,7 @@
 	"license": "MIT",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"website": "https://ozzyczech.github.io/sslko/",
 	"type": "module",
 	"exports": {
 		"types": "./dist/index.d.ts",
