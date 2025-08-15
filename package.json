@@ -1,6 +1,6 @@
 {
 	"name": "ssl-info",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A simple tool to check SSL/TLS certificate information for a given domain.",
 	"repository": "git@github.com:OzzyCzech/ssl-info.git",
 	"author": "Roman Ožana <roman@ozana.cz>",
