@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CertificateErrorCode, getCertificate } from "./index";
+import { CertificateErrorCode, getCertificate } from "../src";
 
 describe("getCertificate", () => {
 	it("expired certificate", async () => {

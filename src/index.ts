@@ -1,2 +1,2 @@
-export * from "./get-certificate";
-export * from "./get-certificate-info";
+export * from "./get-certificate.js";
+export * from "./get-certificate-info.js";

@@ -3,7 +3,7 @@ import {
 	type CertificateErrorCode,
 	getCertificate,
 	type Options,
-} from "./get-certificate";
+} from "./get-certificate.js";
 
 export interface CertificateInfo {
 	valid: boolean;
