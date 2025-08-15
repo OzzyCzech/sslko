@@ -60,6 +60,29 @@ function getDaysRemaining(validFrom: Date, validTo: Date): number {
 	return validTo.getTime() < Date.now() ? -daysRemaining : daysRemaining;
 }
 
+/**
+ * Retrieves information about a certificate for a given host.
+ *
+ * @example Retrieve certificate info for example.com
+ * ```typescript
+ * import { getCertificateInfo } from "sslko";
+ * const info = await getCertificateInfo("example.com");
+ * console.log(info);
+ * ```
+ *
+ * @example Retrieve expired certificate info for expired.badssl.com
+ * ```typescript
+ * import { getCertificateInfo } from "sslko";
+ * const info = await getCertificateInfo("expired.badssl.com");
+ * console.log(info);
+ * ```
+ *
+ * Will return an object with `valid: false` and an error message.
+ *
+ *
+ * @param host
+ * @param options
+ */
 export async function getCertificateInfo(
 	host: string,
 	options: Partial<Options> = {},
