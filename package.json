@@ -1,6 +1,6 @@
 {
 	"name": "sslko",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "A simple tool to check SSL/TLS certificate information for a given domain.",
 	"repository": "OzzyCzech/sslko",
 	"author": "Roman Ožana <roman@ozana.cz>",
