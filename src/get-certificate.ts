@@ -87,6 +87,27 @@ const DefaultOptions: Partial<Options> = {
  * @param host The hostname to connect to.
  * @param options Optional parameters to configure the connection.
  * @throws {CertificateError} If the connection times out or if there is an error retrieving the certificate.
+ *
+ * @example Return a PeerCertificate object:
+ * ```typescript
+ * import { getCertificate } from 'sslko';
+ * const cert = await getCertificate('example.com');
+ * console.log(cert);
+ * ```
+ *
+ * @example Return a PeerCertificate object with a custom port:
+ * ```typescript
+ * import { getCertificate } from 'sslko';
+ * const cert = await getCertificate('example.com', { port: 8443 });
+ * console.log(cert);
+ * ```
+ *
+ * @example Return a PeerCertificateDetailed object:
+ * ```typescript
+ * import { getCertificate } from 'sslko';
+ * const cert = await getCertificate('example.com', { detailed: true });
+ * console.log(cert);
+ * ```
  */
 export async function getCertificate(
 	host: string,
