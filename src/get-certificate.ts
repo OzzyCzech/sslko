@@ -119,14 +119,14 @@ export async function getCertificate(
 		...options,
 	};
 
-	const socket: TLSSocket = tls.connect({ ...rest, port, timeout });
-
 	if (port && (port < 1 || port > 65535)) {
 		throw new CertificateError(
 			"Invalid port number. Port must be between 1 and 65535.",
 			CertificateErrorCode.INVALID_PORT,
 		);
 	}
+
+	const socket: TLSSocket = tls.connect({ ...rest, port, timeout });
 
 	return await new Promise((resolve, reject) => {
 		if (timeout) {
