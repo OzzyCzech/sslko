@@ -144,7 +144,10 @@ export async function getCertificate(
 		}
 
 		socket.on("secureConnect", () => {
-			const cert = socket.getPeerCertificate(detailed);
+			// @see https://github.com/oven-sh/bun/issues/21902 - Bun always failed when detailed = false
+			const cert = detailed
+				? socket.getPeerCertificate(true)
+				: socket.getPeerCertificate();
 			socket.end();
 
 			if (!cert || !cert.valid_to || !cert.valid_from || !cert.subjectaltname) {
