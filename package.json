@@ -1,6 +1,6 @@
 {
 	"name": "sslko",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "A simple tool to check SSL/TLS certificate information for a given domain.",
 	"repository": "git@github.com:OzzyCzech/sslko.git",
 	"author": "Roman Ožana <roman@ozana.cz>",
