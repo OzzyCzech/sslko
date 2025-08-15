@@ -45,21 +45,18 @@ export interface CertificateInfo {
  * @param validFrom
  * @param validTo
  */
-function getDaysBetween(validFrom: Date, validTo: Date): number {
+function getDaysTotal(validFrom: Date, validTo: Date): number {
 	return Math.ceil(Math.abs(validFrom.getTime() - validTo.getTime()) / 8.64e7);
 }
 
 /**
  * Calculates the number of days remaining until the certificate expires.
  * - can be negative if the certificate is already expired
- * @param validFrom
  * @param validTo
  */
-function getDaysRemaining(validFrom: Date, validTo: Date): number {
-	const daysRemaining = getDaysBetween(validFrom, validTo);
-	return validTo.getTime() < Date.now() ? -daysRemaining : daysRemaining;
+function getDaysLeft(validTo: Date): number {
+	return Math.ceil((validTo.getTime() - Date.now()) / 8.64e7);
 }
-
 /**
  * Retrieves information about a certificate for a given host.
  *
@@ -101,8 +98,8 @@ export async function getCertificateInfo(
 		const validFrom = new Date(valid_from);
 		const validTo = new Date(valid_to);
 
-		const daysLeft = getDaysRemaining(validTo, new Date());
-		const daysTotal = getDaysBetween(validFrom, validTo);
+		const daysLeft = getDaysLeft(validTo);
+		const daysTotal = getDaysTotal(validFrom, validTo);
 
 		return {
 			valid: true,
