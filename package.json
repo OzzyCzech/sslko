@@ -4,7 +4,17 @@
 	"description": "A simple tool to check SSL/TLS certificate information for a given domain.",
 	"repository": "OzzyCzech/sslko",
 	"author": "Roman Ožana <roman@ozana.cz>",
-	"keywords": [],
+	"keywords": [
+		"ssl",
+		"ssl-check",
+		"ssl-certificate",
+		"ssl-tls",
+		"tls",
+		"certificate",
+		"domain",
+		"check",
+		"nodejs"
+	],
 	"license": "MIT",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
