@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CertificateErrorCode } from "../src/get-certificate";
-import { getCertificateInfo } from "../src/get-certificate-info";
+import { CertificateErrorCode, getCertificateInfo } from "../src";
 
 describe("getCertificateInfo", () => {
 	it("invalid certificate information", async () => {
@@ -14,6 +13,7 @@ describe("getCertificateInfo", () => {
 
 	it("valid certificate information", async () => {
 		const info = await getCertificateInfo("google.com");
+
 		expect(info.valid).toBe(true);
 		expect(info.error).toBeUndefined();
 		expect(info.code).toBeUndefined();

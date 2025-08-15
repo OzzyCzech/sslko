@@ -101,7 +101,7 @@ export async function getCertificateInfo(
 		const validFrom = new Date(valid_from);
 		const validTo = new Date(valid_to);
 
-		const daysLeft = getDaysRemaining(validFrom, validTo);
+		const daysLeft = getDaysRemaining(validTo, new Date());
 		const daysTotal = getDaysBetween(validFrom, validTo);
 
 		return {

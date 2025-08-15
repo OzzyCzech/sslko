@@ -45,7 +45,6 @@ Will return an [CertificateInfo](https://ozzyczech.github.io/sslko/interfaces/Ce
 
 ```typescript
 import { getCertificate } from 'sslko';
-
 const cert = await getCertificate('example.com');
 ```
 
@@ -55,8 +54,8 @@ There is few options you can pass to the `getCertificate` function:
 import { getCertificate } from 'sslko';
 
 const cert = await getCertificate('example.com', {
-	port: 443, // Default is 443
-	timeout: 5000, // Default is 10000ms
+  port: 488, // Default is 443
+  timeout: 10000, // Default is 5000ms => 5 seconds
 });
 ```
 

@@ -77,7 +77,7 @@ export type Options = ConnectionOptions & {
 
 const DefaultOptions: Partial<Options> = {
 	port: 443, // Default port for HTTPS
-	timeout: 10000, // 10 seconds
+	timeout: 5000, // 5 seconds
 	detailed: false, // get PeerCertificate by default
 };
 
