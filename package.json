@@ -1,0 +1,38 @@
+{
+	"name": "ssl-info",
+	"version": "1.0.0",
+	"description": "A simple tool to check SSL/TLS certificate information for a given domain.",
+	"repository": "git@github.com:OzzyCzech/ssl-info.git",
+	"author": "Roman Ožana <roman@ozana.cz>",
+	"keywords": [],
+	"license": "MIT",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"exports": {
+		"types": "./dist/index.d.ts",
+		"default": "./dist/index.js"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "rm -rf dist && tsc",
+		"release": "np",
+		"prepare": "npm run build",
+		"test": "tsc --noEmit && vitest",
+		"format": "biome check --write .",
+		"format:check": "biome check .",
+		"docs": "typedoc"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.2.0",
+		"@types/node": "^24.2.1",
+		"@types/node-forge": "^1.3.13",
+		"np": "^10.2.0",
+		"tsx": "^4.20.4",
+		"typedoc": "^0.28.10",
+		"typescript": "^5.9.2",
+		"vitest": "^3.2.4"
+	}
+}
