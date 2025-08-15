@@ -12,7 +12,6 @@
 		"newLine": "lf",
 		"stripInternal": true,
 		"strict": true,
-		"useUnknownInCatchVariables": false,
 		"noImplicitReturns": true,
 		"noImplicitOverride": true,
 		"noUnusedLocals": true,
