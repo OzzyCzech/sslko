@@ -1,20 +1,11 @@
-import type { DetailedPeerCertificate, PeerCertificate, TLSSocket, } from "node:tls";
+import type {
+	DetailedPeerCertificate,
+	PeerCertificate,
+	TLSSocket,
+} from "node:tls";
 import * as tls from "node:tls";
-import { TLSSocketOptions } from "node:tls";
 import { CertificateError, CertificateErrorCode } from "./certificate-error.js";
-
-/**
- * GetCertificateOptions for the getCertificate function.
- *
- * - `port`: The port to connect to (default is 443).
- * - `timeout`: The timeout for the connection in milliseconds (default is 5000).
- * - `detailed`: If true, returns a DetailedPeerCertificate with additional information (default is false).
- */
-export type GetCertificateOptions = TLSSocketOptions & {
-	port?: number;
-	timeout?: number;
-	detailed?: boolean;
-};
+import type { GetCertificateOptions } from "./types.js";
 
 /**
  * Default options for the getCertificate function.
@@ -40,7 +31,7 @@ const DefaultOptions: Partial<GetCertificateOptions> = {
  * console.log(cert);
  * ```
  *
- * @example Let Node.js verify the certificate for you:
+ * @example Let Node.js getCertificateInfo the certificate for you:
  * ```typescript
  * import { getCertificate } from 'sslko';
  * const cert = await getCertificate('example.com', { rejectUnauthorized: true });
@@ -74,8 +65,8 @@ export async function getCertificate(
 	host: string,
 	options: Partial<GetCertificateOptions> = {},
 ): Promise<DetailedPeerCertificate | PeerCertificate> {
-	const {timeout, detailed, port, ...rest} = {
-		...{host, servername: host},
+	const { timeout, detailed, port, ...rest } = {
+		...{ host, servername: host },
 		...DefaultOptions,
 		...options,
 	};
@@ -87,10 +78,9 @@ export async function getCertificate(
 		);
 	}
 
-	const socket: TLSSocket = tls.connect({...rest, port, timeout});
+	const socket: TLSSocket = tls.connect({ ...rest, port, timeout });
 
 	return await new Promise((resolve, reject) => {
-
 		if (timeout) {
 			socket.setTimeout(timeout, () => {
 				socket.destroy();
@@ -99,8 +89,7 @@ export async function getCertificate(
 						`Failed to connect to ${host}:${port} within ${timeout}ms`,
 						CertificateErrorCode.TIMEOUT,
 					),
-				)
-				;
+				);
 			});
 		}
 
