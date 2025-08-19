@@ -87,6 +87,7 @@ export async function getCertificateInfo(
 
 	const results: CertificateInfo = {
 		valid: true,
+		expired: false,
 		...convertPeerCertificate(certificate as DetailedPeerCertificate),
 		errors: [],
 		warnings: [],
@@ -103,13 +104,12 @@ export async function getCertificateInfo(
 		results.warnings.push("Certificate does not have a Common Name (CN)");
 	}
 
-	// Dates verification
 	if (Date.now() < results.validFromDate.getTime()) {
 		results.valid = false;
-		results.expired = false;
 		results.errors.push("Certificate is not yet valid");
 	}
 
+	// Check if the certificate is expired
 	if (Date.now() > results.validToDate.getTime()) {
 		results.valid = false;
 		results.expired = true;
@@ -122,6 +122,16 @@ export async function getCertificateInfo(
 		results.errors.push(
 			`Hostname "${host}" does not match the certificate's Common Name (CN) or Subject Alternative Names (SANs)`,
 		);
+	}
+
+	// Reject self-signed certificates
+	if (
+		certificate.subject &&
+		certificate.issuer &&
+		certificate.subject.CN === certificate.issuer.CN
+	) {
+		results.valid = false;
+		results.errors.push("Certificate is self-signed");
 	}
 
 	return results;
