@@ -33,9 +33,9 @@ bun add sslko
 ### Get Certificate Information
 
 ```typescript
-import { getCertificate } from "sslko";
+import { getCertificateInfo } from "sslko";
 
-const certInfo = await getCertificate("example.com");
+const certInfo = await getCertificateInfo("example.com");
 console.log(certInfo);
 ```
 
