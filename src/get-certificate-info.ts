@@ -1,5 +1,9 @@
 import type { DetailedPeerCertificate, PeerCertificate } from "node:tls";
-import { DEFAULT_PORT, DEFAULT_TIMEOUT, MIN_RSA_KEY_SIZE, } from "./constants.js";
+import {
+	DEFAULT_PORT,
+	DEFAULT_TIMEOUT,
+	MIN_RSA_KEY_SIZE,
+} from "./constants.js";
 import { convertPeerCertificate } from "./convert-peer-certificate.js";
 import { getCertificate } from "./get-certificate.js";
 import type { CertificateInfo, GetCertificateOptions } from "./types.js";
