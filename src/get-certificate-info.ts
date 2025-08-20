@@ -7,12 +7,12 @@ import type { CertificateInfo, GetCertificateOptions } from "./types.js";
  * Verifies if the given hostname matches the Common Name (CN) or Subject Alternative Names (SANs) of the certificate.
  *
  * @param host The hostname to check.
- * @param cert The certificate to getCertificateInfo against.
+ * @param certificate The certificate to getCertificateInfo against.
  * @returns `true` if the hostname matches, otherwise `false`.
  */
 export function verifyHostname(
 	host: string,
-	cert: PeerCertificate | DetailedPeerCertificate,
+	certificate: PeerCertificate | DetailedPeerCertificate,
 ): boolean {
 	const isHostnameMatch = (certName: string, host: string): boolean => {
 		if (certName === host) return true;
@@ -30,12 +30,15 @@ export function verifyHostname(
 		return false;
 	};
 
-	if (cert.subject?.CN && isHostnameMatch(cert.subject.CN, host)) {
+	if (
+		certificate.subject?.CN &&
+		isHostnameMatch(certificate.subject.CN, host)
+	) {
 		return true;
 	}
 
-	if (cert.subjectaltname) {
-		const altNames = cert.subjectaltname
+	if (certificate.subjectaltname) {
+		const altNames = certificate.subjectaltname
 			.split(", ")
 			.filter((n) => n.startsWith("DNS:"))
 			.map((n) => n.substring(4));
