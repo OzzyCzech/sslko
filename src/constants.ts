@@ -37,3 +37,14 @@ export const IP_ADDRESS_PREFIX = "IP Address:";
 
 /** Wildcard prefix for domain matching */
 export const WILDCARD_PREFIX = "*.";
+
+/** Weak signature algorithms that should be flagged */
+export const WEAK_SIGNATURE_ALGORITHMS = [
+	"md5WithRSAEncryption",
+	"sha1WithRSAEncryption",
+	"md5WithRSA",
+	"sha1WithRSA",
+] as const;
+
+/** Minimum recommended RSA key sizes */
+export const MIN_RSA_KEY_SIZE = 2048;

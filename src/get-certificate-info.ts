@@ -4,6 +4,8 @@ import {
 	DEFAULT_TIMEOUT_MS,
 	DNS_PREFIX,
 	IP_ADDRESS_PREFIX,
+	MILLISECONDS_PER_DAY,
+	MIN_RSA_KEY_SIZE,
 	WILDCARD_PREFIX,
 } from "./constants.js";
 import { convertPeerCertificate } from "./convert-peer-certificate.js";
@@ -148,6 +150,89 @@ export function isCertificateNearExpiry(
 }
 
 /**
+ * Checks for security weaknesses in a certificate's cryptographic properties.
+ * @param certificate The certificate to analyze for security issues
+ * @returns An array of security warning messages
+ */
+export function checkCertificateSecurity(
+	certificate: PeerCertificate | DetailedPeerCertificate,
+): string[] {
+	const warnings: string[] = [];
+
+	// Check RSA key size if available (modulus and exponent are available on DetailedPeerCertificate)
+	if (
+		"modulus" in certificate &&
+		certificate.modulus &&
+		"exponent" in certificate &&
+		certificate.exponent
+	) {
+		try {
+			// Modulus is typically in hex format, convert to estimate bit length
+			const modulusHex = certificate.modulus.replace(/:/g, "");
+			const keyBits = modulusHex.length * 4; // Each hex char is 4 bits
+
+			if (keyBits < MIN_RSA_KEY_SIZE) {
+				warnings.push(
+					`Certificate uses weak RSA key size: ${keyBits} bits (minimum recommended: ${MIN_RSA_KEY_SIZE} bits)`,
+				);
+			}
+		} catch {
+			// Ignore parsing errors for modulus
+		}
+	}
+
+	return warnings;
+}
+
+/**
+ * Validates the basic structure and content of a certificate.
+ * @param certificate The certificate to validate
+ * @returns An array of validation warning messages (empty if valid)
+ */
+export function validateCertificateStructure(
+	certificate: PeerCertificate | DetailedPeerCertificate,
+): string[] {
+	const warnings: string[] = [];
+
+	// Check for missing essential fields
+	if (!certificate.subject) {
+		warnings.push("Certificate is missing subject information");
+	} else if (!certificate.subject.CN) {
+		warnings.push("Certificate does not have a Common Name (CN)");
+	}
+
+	if (!certificate.issuer) {
+		warnings.push("Certificate is missing issuer information");
+	}
+
+	if (!certificate.subjectaltname) {
+		warnings.push("Certificate does not have Subject Alternative Names (SANs)");
+	}
+
+	// Check for very short or very long validity periods
+	if ("valid_from" in certificate && "valid_to" in certificate) {
+		const validFrom = new Date(certificate.valid_from);
+		const validTo = new Date(certificate.valid_to);
+		const daysTotal = Math.ceil(
+			Math.abs(validFrom.getTime() - validTo.getTime()) / MILLISECONDS_PER_DAY,
+		);
+
+		if (daysTotal < 1) {
+			warnings.push(
+				"Certificate has an unusually short validity period (less than 1 day)",
+			);
+		} else if (daysTotal > 398) {
+			// CA/Browser Forum Baseline Requirements limit certificates to 398 days
+			warnings.push(
+				`Certificate has an unusually long validity period (${daysTotal} days, max recommended: 398)`,
+			);
+		}
+	}
+
+	return warnings;
+}
+
+/**
  * Checks if a certificate appears to be self-signed by comparing subject and issuer.
  * @param certificate The certificate to check
  * @returns true if the certificate appears to be self-signed
@@ -233,9 +318,13 @@ export async function getCertificateInfo(
 		);
 	}
 
-	if (!certificate.subject || !certificate.subject.CN) {
-		results.warnings.push("Certificate does not have a Common Name (CN)");
-	}
+	// Validate certificate structure and add any warnings
+	const structureWarnings = validateCertificateStructure(certificate);
+	results.warnings.push(...structureWarnings);
+
+	// Check for security weaknesses
+	const securityWarnings = checkCertificateSecurity(certificate);
+	results.warnings.push(...securityWarnings);
 
 	// Check if certificate is not yet valid
 	if (Date.now() < results.validFromDate.getTime()) {
