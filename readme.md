@@ -6,7 +6,8 @@
 [![Last Commit](https://img.shields.io/github/last-commit/OzzyCzech/sslko?style=for-the-badge)](https://github.com/OzzyCzech/sslko/commits/main)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/OzzyCzech/sslko/main.yml?style=for-the-badge)](https://github.com/OzzyCzech/sslko/actions)
 
-**SSLko** is a lightweight JavaScript library for retrieving SSL/TLS certificate validity and expiration information.
+**SSLko** is a lightweight JavaScript library for retrieving SSL/TLS certificate details, including validity and
+expiration information.
 
 ## 📦 Installation
 
@@ -45,6 +46,7 @@ Will return an [CertificateInfo](https://ozzyczech.github.io/sslko/interfaces/Ce
 
 ```typescript
 import { getCertificate } from 'sslko';
+
 const cert = await getCertificate('example.com');
 ```
 
@@ -54,8 +56,8 @@ There is few options you can pass to the `getCertificate` function:
 import { getCertificate } from 'sslko';
 
 const cert = await getCertificate('example.com', {
-  port: 488, // Default is 443
-  timeout: 10000, // Default is 5000ms => 5 seconds
+	port: 488, // Default is 443
+	timeout: 10000, // Default is 5000ms => 5 seconds
 });
 ```
 
