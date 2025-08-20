@@ -44,10 +44,30 @@ export type CertificateErrorCode = keyof typeof CertificateErrorCode;
 
 /**
  * Custom error class for handling certificate-related errors.
+ * Extends the standard Error class with additional certificate-specific error codes.
+ *
+ * @example
+ * ```typescript
+ * import { CertificateError, CertificateErrorCode } from "sslko";
+ *
+ * try {
+ *   // Some certificate operation
+ * } catch (error) {
+ *   if (error instanceof CertificateError) {
+ *     console.log(`Certificate error: ${error.code} - ${error.message}`);
+ *   }
+ * }
+ * ```
  */
 export class CertificateError extends Error {
+	/** The specific error code identifying the type of certificate error */
 	code: CertificateErrorCode | string;
 
+	/**
+	 * Creates a new CertificateError instance.
+	 * @param message Human-readable error message describing the issue
+	 * @param code Error code identifying the specific type of certificate error
+	 */
 	constructor(
 		message: string,
 		code: string | CertificateErrorCode = CertificateErrorCode.CERT_ERROR,

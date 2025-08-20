@@ -5,14 +5,20 @@ import type {
 } from "node:tls";
 import * as tls from "node:tls";
 import { CertificateError, CertificateErrorCode } from "./certificate-error.js";
+import {
+	DEFAULT_HTTPS_PORT,
+	DEFAULT_TIMEOUT_MS,
+	MAX_PORT,
+	MIN_PORT,
+} from "./constants.js";
 import type { GetCertificateOptions } from "./types.js";
 
 /**
  * Default options for the getCertificate function.
  */
 const DefaultOptions: Partial<GetCertificateOptions> = {
-	port: 443, // Default port for HTTPS
-	timeout: 5000, // Default timeout of 10 seconds
+	port: DEFAULT_HTTPS_PORT, // Default port for HTTPS
+	timeout: DEFAULT_TIMEOUT_MS, // Default timeout of 5 seconds
 	rejectUnauthorized: false, // We'll do our own verification
 	detailed: true, // Return a DetailedPeerCertificate by default
 };
@@ -71,9 +77,9 @@ export async function getCertificate(
 		...options,
 	};
 
-	if (port && (port < 1 || port > 65535)) {
+	if (port && (port < MIN_PORT || port > MAX_PORT)) {
 		throw new CertificateError(
-			"Invalid port number. Port must be between 1 and 65535.",
+			`Invalid port number. Port must be between ${MIN_PORT} and ${MAX_PORT}.`,
 			CertificateErrorCode.INVALID_PORT,
 		);
 	}
