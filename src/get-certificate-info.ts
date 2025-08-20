@@ -1,9 +1,5 @@
 import type { DetailedPeerCertificate, PeerCertificate } from "node:tls";
-import {
-	DEFAULT_PORT,
-	DEFAULT_TIMEOUT,
-	MIN_RSA_KEY_SIZE,
-} from "./constants.js";
+import { DEFAULT_PORT, DEFAULT_TIMEOUT, MIN_RSA_KEY_SIZE, } from "./constants.js";
 import { convertPeerCertificate } from "./convert-peer-certificate.js";
 import { getCertificate } from "./get-certificate.js";
 import type { CertificateInfo, GetCertificateOptions } from "./types.js";
@@ -210,12 +206,16 @@ export async function getCertificateInfo(
 	const results: CertificateInfo = {
 		valid: true,
 		...convertPeerCertificate(certificate),
-		issuerCertificate: convertPeerCertificate(
-			certificate.issuerCertificate as DetailedPeerCertificate,
-		),
 		errors: [],
 		warnings: [],
 	};
+
+	// Add issuer (CA) certificate if available
+	if (certificate.issuerCertificate) {
+		results.issuerCertificate = convertPeerCertificate(
+			certificate.issuerCertificate as DetailedPeerCertificate,
+		);
+	}
 
 	// Check if certificate is not yet valid
 	if (Date.now() < results.validFromDate.getTime()) {
