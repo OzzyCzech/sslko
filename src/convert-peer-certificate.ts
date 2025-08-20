@@ -8,7 +8,9 @@ import type { PeerCertificateConverted } from "./types.js";
  * @param validTo
  */
 function getDaysTotal(validFrom: Date, validTo: Date): number {
-	return Math.ceil(Math.abs(validFrom.getTime() - validTo.getTime()) / DAY_IN_MILLISECOND);
+	return Math.ceil(
+		Math.abs(validFrom.getTime() - validTo.getTime()) / DAY_IN_MILLISECOND,
+	);
 }
 
 /**
@@ -20,7 +22,9 @@ function getDaysLeft(validTo: Date): number {
 	return Math.ceil((validTo.getTime() - Date.now()) / DAY_IN_MILLISECOND);
 }
 
-export function convertPeerCertificate(certificate: DetailedPeerCertificate): PeerCertificateConverted {
+export function convertPeerCertificate(
+	certificate: DetailedPeerCertificate,
+): PeerCertificateConverted {
 	const { valid_from, valid_to, pubkey, raw, ...rest } = certificate;
 
 	// Remove issuerCertificate to avoid circular reference

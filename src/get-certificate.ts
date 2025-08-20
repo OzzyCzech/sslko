@@ -1,7 +1,16 @@
-import type { DetailedPeerCertificate, PeerCertificate, TLSSocket } from "node:tls";
+import type {
+	DetailedPeerCertificate,
+	PeerCertificate,
+	TLSSocket,
+} from "node:tls";
 import * as tls from "node:tls";
 import { CertificateError, CertificateErrorCode } from "./certificate-error.js";
-import { DEFAULT_PORT, DEFAULT_TIMEOUT, MAX_PORT, MIN_PORT } from "./constants.js";
+import {
+	DEFAULT_PORT,
+	DEFAULT_TIMEOUT,
+	MAX_PORT,
+	MIN_PORT,
+} from "./constants.js";
 import type { GetCertificateOptions } from "./types.js";
 
 /**
@@ -92,13 +101,18 @@ export async function getCertificate(
 
 		socket.on("secureConnect", () => {
 			// @see https://github.com/oven-sh/bun/issues/21902 - Bun always failed when detailed = false
-			const cert = detailed ? socket.getPeerCertificate(true) : socket.getPeerCertificate();
+			const cert = detailed
+				? socket.getPeerCertificate(true)
+				: socket.getPeerCertificate();
 			socket.end();
 
 			// empty certificate check
 			if (!cert || Object.keys(cert).length === 0) {
 				return reject(
-					new CertificateError("No certificate information available", CertificateErrorCode.MISSING_CERTIFICATE),
+					new CertificateError(
+						"No certificate information available",
+						CertificateErrorCode.MISSING_CERTIFICATE,
+					),
 				);
 			}
 
@@ -107,7 +121,9 @@ export async function getCertificate(
 
 		socket.on("error", (error: NodeJS.ErrnoException) => {
 			const message = error?.message || "Unknown error";
-			const code = (error?.code as CertificateErrorCode) || CertificateErrorCode.CERT_ERROR;
+			const code =
+				(error?.code as CertificateErrorCode) ||
+				CertificateErrorCode.CERT_ERROR;
 			reject(new CertificateError(message, code));
 		});
 	});

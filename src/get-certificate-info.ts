@@ -1,5 +1,9 @@
 import type { DetailedPeerCertificate, PeerCertificate } from "node:tls";
-import { DEFAULT_PORT, DEFAULT_TIMEOUT, MIN_RSA_KEY_SIZE } from "./constants.js";
+import {
+	DEFAULT_PORT,
+	DEFAULT_TIMEOUT,
+	MIN_RSA_KEY_SIZE,
+} from "./constants.js";
 import { convertPeerCertificate } from "./convert-peer-certificate.js";
 import { getCertificate } from "./get-certificate.js";
 import type { CertificateInfo, GetCertificateOptions } from "./types.js";
@@ -11,12 +15,18 @@ import type { CertificateInfo, GetCertificateOptions } from "./types.js";
  * @param certificate The certificate to getCertificateInfo against.
  * @returns `true` if the hostname matches, otherwise `false`.
  */
-export function verifyHostname(host: string, certificate: PeerCertificate | DetailedPeerCertificate): boolean {
+export function verifyHostname(
+	host: string,
+	certificate: PeerCertificate | DetailedPeerCertificate,
+): boolean {
 	const isHostnameMatch = (certName: string, host: string): boolean => {
 		if (certName === host) return true;
 
 		// Wildcard match
-		if (certName.startsWith("*.") && host.split(".").length === certName.split(".").length) {
+		if (
+			certName.startsWith("*.") &&
+			host.split(".").length === certName.split(".").length
+		) {
 			const certDomain = certName.substring(2);
 			const hostDomain = host.split(".").slice(1).join(".");
 			return hostDomain === certDomain;
@@ -25,7 +35,10 @@ export function verifyHostname(host: string, certificate: PeerCertificate | Deta
 		return false;
 	};
 
-	if (certificate.subject?.CN && isHostnameMatch(certificate.subject.CN, host)) {
+	if (
+		certificate.subject?.CN &&
+		isHostnameMatch(certificate.subject.CN, host)
+	) {
 		return true;
 	}
 
@@ -56,7 +69,9 @@ const DefaultOptions: Partial<GetCertificateOptions> = {
  * @param certificate The certificate to check
  * @returns true if the certificate appears to be self-signed
  */
-export function isSelfSignedCertificate(certificate: PeerCertificate | DetailedPeerCertificate): boolean {
+export function isSelfSignedCertificate(
+	certificate: PeerCertificate | DetailedPeerCertificate,
+): boolean {
 	if (!certificate.subject || !certificate.issuer) {
 		return false;
 	}
@@ -67,14 +82,18 @@ export function isSelfSignedCertificate(certificate: PeerCertificate | DetailedP
 	}
 
 	// If no CN, compare the entire subject/issuer objects
-	return JSON.stringify(certificate.subject) === JSON.stringify(certificate.issuer);
+	return (
+		JSON.stringify(certificate.subject) === JSON.stringify(certificate.issuer)
+	);
 }
 /**
  * Validates the basic structure and content of a certificate.
  * @param certificate The certificate to validate
  * @returns An array of validation warning messages (empty if valid)
  */
-export function validateCertificateStructure(certificate: PeerCertificate | DetailedPeerCertificate): string[] {
+export function validateCertificateStructure(
+	certificate: PeerCertificate | DetailedPeerCertificate,
+): string[] {
 	const warnings: string[] = [];
 
 	// Check for missing essential fields
@@ -100,11 +119,18 @@ export function validateCertificateStructure(certificate: PeerCertificate | Deta
  * @param certificate The certificate to analyze for security issues
  * @returns An array of security warning messages
  */
-export function checkCertificateSecurity(certificate: PeerCertificate | DetailedPeerCertificate): string[] {
+export function checkCertificateSecurity(
+	certificate: PeerCertificate | DetailedPeerCertificate,
+): string[] {
 	const warnings: string[] = [];
 
 	// Check RSA key size if available (modulus and exponent are available on DetailedPeerCertificate)
-	if ("modulus" in certificate && certificate.modulus && "exponent" in certificate && certificate.exponent) {
+	if (
+		"modulus" in certificate &&
+		certificate.modulus &&
+		"exponent" in certificate &&
+		certificate.exponent
+	) {
 		try {
 			// Modulus is typically in hex format, convert to estimate bit length
 			const modulusHex = certificate.modulus.replace(/:/g, "");
@@ -121,15 +147,24 @@ export function checkCertificateSecurity(certificate: PeerCertificate | Detailed
 	}
 
 	/** Weak signature algorithms that should be flagged */
-	const weekSignatures = ["md5WithRSAEncryption", "sha1WithRSAEncryption", "md5WithRSA", "sha1WithRSA"] as const;
+	const weekSignatures = [
+		"md5WithRSAEncryption",
+		"sha1WithRSAEncryption",
+		"md5WithRSA",
+		"sha1WithRSA",
+	] as const;
 
 	// Check for weak signature algorithm
 	if (
 		"signatureAlgorithm" in certificate &&
 		typeof certificate.signatureAlgorithm === "string" &&
-		weekSignatures.includes(certificate.signatureAlgorithm as (typeof weekSignatures)[number])
+		weekSignatures.includes(
+			certificate.signatureAlgorithm as (typeof weekSignatures)[number],
+		)
 	) {
-		warnings.push(`Certificate uses weak signature algorithm: ${certificate.signatureAlgorithm}`);
+		warnings.push(
+			`Certificate uses weak signature algorithm: ${certificate.signatureAlgorithm}`,
+		);
 	}
 
 	return warnings;
@@ -175,7 +210,9 @@ export async function getCertificateInfo(
 	const results: CertificateInfo = {
 		valid: true,
 		...convertPeerCertificate(certificate),
-		issuerCertificate: convertPeerCertificate(certificate.issuerCertificate as DetailedPeerCertificate),
+		issuerCertificate: convertPeerCertificate(
+			certificate.issuerCertificate as DetailedPeerCertificate,
+		),
 		errors: [],
 		warnings: [],
 	};
@@ -204,7 +241,9 @@ export async function getCertificateInfo(
 
 	// Unusually short validity period check
 	if (results.daysTotal < 1) {
-		results.warnings.push("Certificate has an unusually short validity period (less than 1 day)");
+		results.warnings.push(
+			"Certificate has an unusually short validity period (less than 1 day)",
+		);
 	}
 
 	// Unusually long validity period check
