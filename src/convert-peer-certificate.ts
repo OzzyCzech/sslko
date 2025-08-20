@@ -30,6 +30,7 @@ export function convertPeerCertificate(
 	return {
 		validFromDate: new Date(valid_from),
 		validToDate: new Date(valid_to),
+		expired: new Date(valid_to).getTime() < Date.now(),
 		daysLeft: getDaysLeft(new Date(valid_to)),
 		daysTotal: getDaysTotal(new Date(valid_from), new Date(valid_to)),
 		validFor: certificate.subjectaltname

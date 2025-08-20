@@ -87,8 +87,7 @@ export async function getCertificateInfo(
 
 	const results: CertificateInfo = {
 		valid: true,
-		expired: false,
-		...convertPeerCertificate(certificate as DetailedPeerCertificate),
+		...convertPeerCertificate(certificate),
 		errors: [],
 		warnings: [],
 	};
