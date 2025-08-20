@@ -1,13 +1,13 @@
 import type { DetailedPeerCertificate, PeerCertificate } from "node:tls";
-import { convertPeerCertificate } from "./certificate-convert.js";
+import { convertPeerCertificate } from "./convert-peer-certificate.js";
 import { getCertificate } from "./get-certificate.js";
 import type { CertificateInfo, GetCertificateOptions } from "./types.js";
 
 /**
  * Verifies if the given hostname matches the Common Name (CN) or Subject Alternative Names (SANs) of the certificate.
  *
- * @param host - The hostname to check.
- * @param cert - The certificate to getCertificateInfo against.
+ * @param host The hostname to check.
+ * @param cert The certificate to getCertificateInfo against.
  * @returns `true` if the hostname matches, otherwise `false`.
  */
 export function verifyHostname(
