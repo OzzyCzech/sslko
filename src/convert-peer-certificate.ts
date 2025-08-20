@@ -1,4 +1,5 @@
 import type { DetailedPeerCertificate } from "node:tls";
+import { DAY_IN_MILLISECOND } from "./constants.js";
 import type { PeerCertificateConverted } from "./types.js";
 
 /**
@@ -7,7 +8,9 @@ import type { PeerCertificateConverted } from "./types.js";
  * @param validTo
  */
 function getDaysTotal(validFrom: Date, validTo: Date): number {
-	return Math.ceil(Math.abs(validFrom.getTime() - validTo.getTime()) / 8.64e7);
+	return Math.ceil(
+		Math.abs(validFrom.getTime() - validTo.getTime()) / DAY_IN_MILLISECOND,
+	);
 }
 
 /**
@@ -16,7 +19,7 @@ function getDaysTotal(validFrom: Date, validTo: Date): number {
  * @param validTo
  */
 function getDaysLeft(validTo: Date): number {
-	return Math.ceil((validTo.getTime() - Date.now()) / 8.64e7);
+	return Math.ceil((validTo.getTime() - Date.now()) / DAY_IN_MILLISECOND);
 }
 
 export function convertPeerCertificate(
