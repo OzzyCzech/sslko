@@ -34,10 +34,7 @@ export interface CertificateDates {
  * with only the necessary fields for certificate information.
  */
 export interface PeerCertificateConverted
-	extends Omit<
-			DetailedPeerCertificate,
-			"valid_from" | "valid_to" | "raw" | "pubkey" | "issuerCertificate"
-		>,
+	extends Omit<DetailedPeerCertificate, "valid_from" | "valid_to" | "raw" | "pubkey" | "issuerCertificate">,
 		CertificateDates {
 	/** The raw certificate in base64 format. */
 	raw?: string;

@@ -48,10 +48,7 @@ export type CertificateErrorCode = keyof typeof CertificateErrorCode;
 export class CertificateError extends Error {
 	code: CertificateErrorCode | string;
 
-	constructor(
-		message: string,
-		code: string | CertificateErrorCode = CertificateErrorCode.CERT_ERROR,
-	) {
+	constructor(message: string, code: string | CertificateErrorCode = CertificateErrorCode.CERT_ERROR) {
 		super(message);
 		this.name = "CertificateError";
 		this.code = code;

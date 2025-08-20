@@ -4,9 +4,7 @@ import { getCertificate } from "../src/index.js";
 
 describe("getCertificateInfo", () => {
 	it("invalid certificate information", async () => {
-		const cert = (await getCertificate(
-			"expired.badssl.com",
-		)) as DetailedPeerCertificate;
+		const cert = (await getCertificate("expired.badssl.com")) as DetailedPeerCertificate;
 
 		expect(cert.valid_to).toBeDefined();
 		expect(cert.valid_from).toBeDefined();
@@ -36,9 +34,7 @@ describe("getCertificateInfo", () => {
 		} catch (error) {
 			const e = error as { code?: string; message?: string };
 			expect(e.code).toBe("TIMEOUT");
-			expect(e.message).toContain(
-				"Failed to connect to google.com:443 within 1ms",
-			);
+			expect(e.message).toContain("Failed to connect to google.com:443 within 1ms");
 		}
 	});
 });
