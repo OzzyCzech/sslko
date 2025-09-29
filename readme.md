@@ -1,4 +1,4 @@
-# SSLko
+# 🔒 SSLko
 
 [![NPM Downloads](https://img.shields.io/npm/dm/sslko?style=for-the-badge)](https://www.npmjs.com/package/sslko)
 [![NPM Version](https://img.shields.io/npm/v/sslko?style=for-the-badge)](https://www.npmjs.com/package/sslko)
