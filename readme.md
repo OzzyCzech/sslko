@@ -41,6 +41,18 @@ console.log(certInfo);
 ```
 
 Will return an [CertificateInfo](https://ozzyczech.github.io/sslko/interfaces/CertificateInfo.html) object.
+The most important properties are:
+
+- `daysLeft` - Number of days until the certificate expires.
+- `daysTotal` - Total number of days the certificate is valid for.
+- `errorCode` - The error code if the certificate validation failed.
+- `errors` - List of errors found during certificate validation.
+- `expired` - Boolean indicating if the certificate has expired.
+- `valid` - Boolean indicating if the certificate is currently valid.
+- `validFor` - The list of valid subject alternative names (SANs) for the certificate.
+- `validFromDate` - The date from which the certificate is valid.
+- `validToDate` - The date until which the certificate is valid.
+- `warnings` - List of warnings found during certificate validation.
 
 ### Get Certificate
 
