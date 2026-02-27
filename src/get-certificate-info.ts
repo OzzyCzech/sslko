@@ -35,11 +35,12 @@ export function verifyHostname(
 		return false;
 	};
 
-	if (
-		certificate.subject?.CN &&
-		isHostnameMatch(certificate.subject.CN, host)
-	) {
-		return true;
+	const cn = certificate.subject?.CN;
+	if (cn) {
+		const cnValues = Array.isArray(cn) ? cn : [cn];
+		if (cnValues.some((name) => isHostnameMatch(name, host))) {
+			return true;
+		}
 	}
 
 	if (certificate.subjectaltname) {
