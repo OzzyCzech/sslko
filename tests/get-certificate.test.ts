@@ -29,15 +29,17 @@ describe("getCertificateInfo", () => {
 	});
 
 	it("reject due timeout", async () => {
+		// RFC 5737 TEST-NET-1 — guaranteed not to route, so the timeout
+		// fires before any TLS handshake can race us.
 		try {
-			await getCertificate("google.com", {
-				timeout: 1, // Set a very short timeout
+			await getCertificate("192.0.2.1", {
+				timeout: 50,
 			});
 		} catch (error) {
 			const e = error as { code?: string; message?: string };
 			expect(e.code).toBe("TIMEOUT");
 			expect(e.message).toContain(
-				"Failed to connect to google.com:443 within 1ms",
+				"Failed to connect to 192.0.2.1:443 within 50ms",
 			);
 		}
 	});

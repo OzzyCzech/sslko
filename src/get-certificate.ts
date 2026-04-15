@@ -87,8 +87,12 @@ export async function getCertificate(
 	const socket: TLSSocket = tls.connect({ ...rest, port, timeout });
 
 	return await new Promise((resolve, reject) => {
+		let settled = false;
+
 		if (timeout) {
 			socket.setTimeout(timeout, () => {
+				if (settled) return;
+				settled = true;
 				socket.destroy();
 				reject(
 					new CertificateError(
@@ -100,6 +104,7 @@ export async function getCertificate(
 		}
 
 		socket.on("secureConnect", () => {
+			if (settled) return;
 			// @see https://github.com/oven-sh/bun/issues/21902 - Bun always failed when detailed = false
 			const cert = detailed
 				? socket.getPeerCertificate(true)
@@ -108,6 +113,7 @@ export async function getCertificate(
 
 			// empty certificate check
 			if (!cert || Object.keys(cert).length === 0) {
+				settled = true;
 				return reject(
 					new CertificateError(
 						"No certificate information available",
@@ -116,10 +122,13 @@ export async function getCertificate(
 				);
 			}
 
+			settled = true;
 			resolve(cert);
 		});
 
 		socket.on("error", (error: NodeJS.ErrnoException) => {
+			if (settled) return;
+			settled = true;
 			const message = error?.message || "Unknown error";
 			const code =
 				(error?.code as CertificateErrorCode) ||
