@@ -1,10 +1,8 @@
-{
-	"extends": "@ozzyczech/tsconfig",
-	"compilerOptions": {
-		"module": "nodenext",
-		"moduleResolution": "nodenext",
-		"rootDir": "src",
-		"types": ["node"]
-	},
-	"include": ["src/**/*"]
-}
+//{
+//	"extends": "@ozzyczech/tsconfig",
+//	"compilerOptions": {
+//		"rootDir": "src",
+//		"types": ["node"]
+//	},
+//	"include": ["src/**/*"]
+//}

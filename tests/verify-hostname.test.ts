@@ -1,5 +1,5 @@
+import { describe, expect, it } from "bun:test";
 import type { DetailedPeerCertificate } from "node:tls";
-import { describe, expect, it } from "vitest";
 import { verifyHostname } from "../src/index.js";
 
 describe("verifyHostname", () => {
