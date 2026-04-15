@@ -14,7 +14,7 @@ expiration information.
 You can install SSLko using npm, yarn, pnpm, or bun:
 
 ```bash
-npm install sslko
+npm i sslko
 ```
 
 ```bash
