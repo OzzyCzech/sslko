@@ -34,7 +34,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "rm -rf dist && tsc",
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
 		"release": "np",
 		"prepare": "bun run build",
 		"test": "tsc --noEmit && bun test",
