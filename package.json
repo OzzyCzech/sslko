@@ -2,7 +2,13 @@
 	"name": "sslko",
 	"version": "2.0.5",
 	"description": "A simple tool to check SSL/TLS certificate information for a given domain.",
-	"repository": "OzzyCzech/sslko",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/OzzyCzech/sslko.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"author": "Roman Ožana <roman@ozana.cz>",
 	"keywords": [
 		"ssl",
