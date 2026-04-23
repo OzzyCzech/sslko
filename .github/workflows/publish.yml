@@ -29,9 +29,9 @@ jobs:
       - run: bun run test
 
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --ignore-scripts
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           generate_release_notes: true
