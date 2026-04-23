@@ -36,10 +36,10 @@ describe("getCertificateInfo", () => {
 			await getCertificate("192.0.2.1", {
 				timeout: 50,
 			});
-			expect.unreachable("should have thrown");
+			throw new Error("should have thrown");
 		} catch (error) {
 			const e = error as { code?: string; message?: string };
-			expect(["TIMEOUT", "ERR_INVALID_ARG_VALUE"]).toContain(e.code);
+			expect(["TIMEOUT", "ERR_INVALID_ARG_VALUE"]).toContain(e.code as string);
 		}
 	});
 });
