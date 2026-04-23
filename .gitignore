@@ -2,3 +2,7 @@
 /dist
 /docs
 *.tsbuildinfo
+
+# Ignore lock files
+yarn.lock
+package-lock.json
