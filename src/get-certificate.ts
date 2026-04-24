@@ -18,7 +18,7 @@ import type { GetCertificateOptions } from "./types.js";
  */
 const DefaultOptions: Partial<GetCertificateOptions> = {
 	port: DEFAULT_PORT, // Default port for HTTPS
-	timeout: DEFAULT_TIMEOUT, // Default timeout of 10 seconds
+	timeout: DEFAULT_TIMEOUT, // Default timeout of 5 seconds
 	rejectUnauthorized: false, // We'll do our own verification
 	detailed: true, // Return a DetailedPeerCertificate by default
 };

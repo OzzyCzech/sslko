@@ -1,10 +1,6 @@
 import type { DetailedPeerCertificate, PeerCertificate } from "node:tls";
 import { CertificateError } from "./certificate-error.js";
-import {
-	DEFAULT_PORT,
-	DEFAULT_TIMEOUT,
-	MIN_RSA_KEY_SIZE,
-} from "./constants.js";
+import { MIN_RSA_KEY_SIZE } from "./constants.js";
 import { convertPeerCertificate } from "./convert-peer-certificate.js";
 import { getCertificate } from "./get-certificate.js";
 import type { CertificateInfo, GetCertificateOptions } from "./types.js";
@@ -67,14 +63,6 @@ export function verifyHostname(
 	return false;
 }
 
-/**
- * Default options for the getCertificate function.
- */
-const DefaultOptions: Partial<GetCertificateOptions> = {
-	port: DEFAULT_PORT, // Default port for HTTPS
-	timeout: DEFAULT_TIMEOUT, // Default timeout of 10 seconds
-	rejectUnauthorized: false, // We'll do our own verification
-};
 
 /**
  * Checks if a certificate appears to be self-signed by comparing all distinguished name fields
@@ -221,8 +209,8 @@ export async function getCertificateInfo(
 
 	try {
 		certificate = (await getCertificate(host, {
-			...DefaultOptions,
 			...options,
+			rejectUnauthorized: false, // We do our own verification
 			detailed: true, // Always return DetailedPeerCertificate for info
 		})) as DetailedPeerCertificate;
 	} catch (error) {
