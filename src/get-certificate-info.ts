@@ -175,7 +175,14 @@ export function checkCertificateSecurity(
 }
 
 /**
- * Retrieves information about a certificate for a given host.
+ * Retrieves and validates certificate information for a given host.
+ *
+ * Checks performed: expiration, not-yet-valid, hostname verification, self-signed
+ * detection, certificate structure, and cryptographic security (key size, signature algorithm).
+ *
+ * **Limitations:** This function does not perform OCSP or CRL revocation checking.
+ * A certificate that has been revoked by its CA will still appear as `valid: true`
+ * if it passes all other checks. For revocation checking, use a dedicated PKI library.
  *
  * @example Retrieve certificate info for example.com
  * ```typescript
