@@ -2,7 +2,7 @@ import { describe, expect, it } from "bun:test";
 import type { DetailedPeerCertificate } from "node:tls";
 import { getCertificate } from "../src/index.js";
 
-describe("getCertificateInfo", () => {
+describe("getCertificate", () => {
 	it("invalid certificate information", async () => {
 		const cert = (await getCertificate(
 			"expired.badssl.com",

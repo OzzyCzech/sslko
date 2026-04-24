@@ -151,7 +151,7 @@ export function checkCertificateSecurity(
 	}
 
 	/** Weak signature algorithms that should be flagged */
-	const weekSignatures = [
+	const weakSignatures = [
 		"md5WithRSAEncryption",
 		"sha1WithRSAEncryption",
 		"md5WithRSA",
@@ -162,8 +162,8 @@ export function checkCertificateSecurity(
 	if (
 		"signatureAlgorithm" in certificate &&
 		typeof certificate.signatureAlgorithm === "string" &&
-		weekSignatures.includes(
-			certificate.signatureAlgorithm as (typeof weekSignatures)[number],
+		weakSignatures.includes(
+			certificate.signatureAlgorithm as (typeof weakSignatures)[number],
 		)
 	) {
 		warnings.push(
