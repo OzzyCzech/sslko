@@ -26,6 +26,17 @@ const DefaultOptions: Partial<GetCertificateOptions> = {
 /**
  * Fetches the SSL/TLS certificate from a given host and port.
  *
+ * **Note:** When `detailed` is true (the default), the returned `DetailedPeerCertificate`
+ * contains a circular `issuerCertificate` reference (the root CA cert points to itself).
+ * This will cause `JSON.stringify` to throw. Use {@link getCertificateInfo} for a
+ * serialization-safe result, or remove the circular reference before serializing.
+ *
+ * **Note:** `rejectUnauthorized` defaults to `false` — the TLS handshake will succeed
+ * even for expired or self-signed certificates. Use {@link getCertificateInfo} for
+ * validation, or pass `rejectUnauthorized: true` to let Node.js verify the certificate.
+ *
+ * This function does not check certificate revocation (OCSP/CRL).
+ *
  * @param host The hostname to connect to.
  * @param options Optional parameters to configure the connection.
  * @throws {CertificateError} If the connection times out or if there is an error retrieving the certificate.
