@@ -1,4 +1,5 @@
 import type { DetailedPeerCertificate, PeerCertificate } from "node:tls";
+import { CertificateError } from "./certificate-error.js";
 import {
 	DEFAULT_PORT,
 	DEFAULT_TIMEOUT,
@@ -207,11 +208,28 @@ export async function getCertificateInfo(
 	host: string,
 	options: Partial<GetCertificateOptions> = {},
 ): Promise<CertificateInfo> {
-	const certificate = (await getCertificate(host, {
-		...DefaultOptions,
-		...options,
-		detailed: true, // Always return DetailedPeerCertificate for info
-	})) as DetailedPeerCertificate;
+	let certificate: DetailedPeerCertificate;
+
+	try {
+		certificate = (await getCertificate(host, {
+			...DefaultOptions,
+			...options,
+			detailed: true, // Always return DetailedPeerCertificate for info
+		})) as DetailedPeerCertificate;
+	} catch (error) {
+		const certError =
+			error instanceof CertificateError
+				? error
+				: new CertificateError(
+						error instanceof Error ? error.message : String(error),
+					);
+		return {
+			valid: false,
+			errors: [certError.message],
+			warnings: [],
+			errorCode: certError.code,
+		} as unknown as CertificateInfo;
+	}
 
 	const results: CertificateInfo = {
 		valid: true,
