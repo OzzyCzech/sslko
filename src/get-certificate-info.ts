@@ -46,11 +46,20 @@ export function verifyHostname(
 	}
 
 	if (certificate.subjectaltname) {
-		const altNames = certificate.subjectaltname
-			.split(", ")
+		const entries = certificate.subjectaltname.split(", ");
+
+		const dnsNames = entries
 			.filter((n) => n.startsWith("DNS:"))
 			.map((n) => n.substring(4));
-		if (altNames.some((dnsName) => isHostnameMatch(dnsName, host))) {
+		if (dnsNames.some((dnsName) => isHostnameMatch(dnsName, host))) {
+			return true;
+		}
+
+		// Match IP addresses in SANs (exact match only, no wildcards)
+		const ipAddresses = entries
+			.filter((n) => n.startsWith("IP Address:"))
+			.map((n) => n.substring(11));
+		if (ipAddresses.some((ip) => ip === host)) {
 			return true;
 		}
 	}

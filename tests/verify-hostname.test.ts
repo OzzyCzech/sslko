@@ -34,12 +34,13 @@ describe("verifyHostname", () => {
 		expect(verifyHostname("example.com", cert)).toBe(false);
 	});
 
-	it("skip IP addresses", () => {
+	it("match IP addresses in SANs", () => {
 		const cert = {
-			subjectaltname: "DNS:google.com, IP Address: 192.168.1.1",
+			subjectaltname: "DNS:google.com, IP Address:192.168.1.1",
 		} as DetailedPeerCertificate;
 
 		expect(verifyHostname("google.com", cert)).toBe(true);
-		expect(verifyHostname("192.168.1.1", cert)).toBe(false);
+		expect(verifyHostname("192.168.1.1", cert)).toBe(true);
+		expect(verifyHostname("10.0.0.1", cert)).toBe(false);
 	});
 });
