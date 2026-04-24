@@ -4,5 +4,7 @@
 *.tsbuildinfo
 
 # Ignore lock files
-yarn.lock
 package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-shrinkwrap.json
