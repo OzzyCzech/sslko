@@ -67,7 +67,9 @@ const DefaultOptions: Partial<GetCertificateOptions> = {
 };
 
 /**
- * Checks if a certificate appears to be self-signed by comparing subject and issuer.
+ * Checks if a certificate appears to be self-signed by comparing all distinguished name fields
+ * between subject and issuer. A simple CN-only comparison produces false positives because
+ * different CAs can share a CN.
  * @param certificate The certificate to check
  * @returns true if the certificate appears to be self-signed
  */
@@ -78,14 +80,16 @@ export function isSelfSignedCertificate(
 		return false;
 	}
 
-	// Compare Common Names
-	if (certificate.subject.CN && certificate.issuer.CN) {
-		return certificate.subject.CN === certificate.issuer.CN;
-	}
+	const s = certificate.subject;
+	const i = certificate.issuer;
 
-	// If no CN, compare the entire subject/issuer objects
 	return (
-		JSON.stringify(certificate.subject) === JSON.stringify(certificate.issuer)
+		s.CN === i.CN &&
+		s.O === i.O &&
+		s.OU === i.OU &&
+		s.C === i.C &&
+		s.ST === i.ST &&
+		s.L === i.L
 	);
 }
 /**
