@@ -63,7 +63,6 @@ export function verifyHostname(
 	return false;
 }
 
-
 /**
  * Checks if a certificate appears to be self-signed by comparing all distinguished name fields
  * between subject and issuer. A simple CN-only comparison produces false positives because

@@ -6,9 +6,7 @@ import {
 	validateCertificateStructure,
 } from "../src/index.js";
 
-function makeCert(
-	overrides: Partial<PeerCertificate> = {},
-): PeerCertificate {
+function makeCert(overrides: Partial<PeerCertificate> = {}): PeerCertificate {
 	return {
 		subject: { CN: "example.com" },
 		issuer: { CN: "Test CA", O: "Test CA Inc" },
@@ -25,8 +23,22 @@ function makeCert(
 describe("isSelfSignedCertificate", () => {
 	it("detects self-signed certificate", () => {
 		const cert = makeCert({
-			subject: { CN: "Self", O: "Org", OU: undefined, C: "US", ST: "CA", L: "LA" },
-			issuer: { CN: "Self", O: "Org", OU: undefined, C: "US", ST: "CA", L: "LA" },
+			subject: {
+				CN: "Self",
+				O: "Org",
+				OU: undefined,
+				C: "US",
+				ST: "CA",
+				L: "LA",
+			},
+			issuer: {
+				CN: "Self",
+				O: "Org",
+				OU: undefined,
+				C: "US",
+				ST: "CA",
+				L: "LA",
+			},
 		});
 		expect(isSelfSignedCertificate(cert)).toBe(true);
 	});
@@ -48,12 +60,16 @@ describe("isSelfSignedCertificate", () => {
 	});
 
 	it("returns false when subject is missing", () => {
-		const cert = makeCert({ subject: undefined as unknown as PeerCertificate["subject"] });
+		const cert = makeCert({
+			subject: undefined as unknown as PeerCertificate["subject"],
+		});
 		expect(isSelfSignedCertificate(cert)).toBe(false);
 	});
 
 	it("returns false when issuer is missing", () => {
-		const cert = makeCert({ issuer: undefined as unknown as PeerCertificate["issuer"] });
+		const cert = makeCert({
+			issuer: undefined as unknown as PeerCertificate["issuer"],
+		});
 		expect(isSelfSignedCertificate(cert)).toBe(false);
 	});
 });
@@ -64,7 +80,9 @@ describe("validateCertificateStructure", () => {
 	});
 
 	it("warns about missing subject", () => {
-		const cert = makeCert({ subject: undefined as unknown as PeerCertificate["subject"] });
+		const cert = makeCert({
+			subject: undefined as unknown as PeerCertificate["subject"],
+		});
 		const warnings = validateCertificateStructure(cert);
 		expect(warnings).toContain("Certificate is missing subject information");
 	});
@@ -76,7 +94,9 @@ describe("validateCertificateStructure", () => {
 	});
 
 	it("warns about missing issuer", () => {
-		const cert = makeCert({ issuer: undefined as unknown as PeerCertificate["issuer"] });
+		const cert = makeCert({
+			issuer: undefined as unknown as PeerCertificate["issuer"],
+		});
 		const warnings = validateCertificateStructure(cert);
 		expect(warnings).toContain("Certificate is missing issuer information");
 	});
